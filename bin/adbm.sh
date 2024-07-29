@@ -1,13 +1,8 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 
-BRANCH_SCRIPT="${PWD}/branch.sh"
-SET_SCRIPT="${PWD}/set.sh"
-
-# if [ "$#" -lt 2 ]; then
-#     echo "Usage: $0 <command> <arguments>"
-#     exit 1
-# fi
+BRANCH_SCRIPT="${PWD}/bin/branch.sh"
+SET_SCRIPT="${PWD}/bin/set.sh"
 
 print_help() {
     echo "Usage:"
@@ -34,15 +29,18 @@ configure)
         case $1 in
         project=*)
             PROJECT_NAME="${1#*=}"
-            source $SET_SCRIPT "PROJECT_NAME" "$PROJECT_NAME"
+            # shellcheck disable=SC1090
+            source "$SET_SCRIPT" "PROJECT_NAME" "$PROJECT_NAME"
             ;;
         organization=*)
             ORG_NAME="${1#*=}"
-            source $SET_SCRIPT "ORG_NAME" "$ORG_NAME"
+            # shellcheck disable=SC1090
+            source "$SET_SCRIPT" "ORG_NAME" "$ORG_NAME"
             ;;
         pat=*)
             PAT="${1#*=}"
-            source $SET_SCRIPT "PAT" "$PAT"
+            # shellcheck disable=SC1090
+            source "$SET_SCRIPT" "PAT" "$PAT"
             ;;
         *)
             echo "Invalid argument: $1"
@@ -57,7 +55,8 @@ help)
     exit 0
     ;;
 branch)
-    source $BRANCH_SCRIPT "$1"
+    # shellcheck disable=SC1090
+    source "$BRANCH_SCRIPT" "$1"
     exit 0
     ;;
 *)

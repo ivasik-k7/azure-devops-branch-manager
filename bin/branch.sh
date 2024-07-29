@@ -3,6 +3,7 @@
 set -e
 
 BASE_URL="https://dev.azure.com/${ORG_NAME}/${PROJECT_NAME}/_apis/wit/workitems"
+BASH_PROFILE="$HOME/.bashrc"
 
 check_utilities() {
     local missing_utilities=()
@@ -26,7 +27,8 @@ check_utilities() {
 }
 
 check_project_info() {
-    source "$HOME/.bashrc"
+    # shellcheck disable=SC1090
+    source "$BASH_PROFILE"
 
     if [ -z "$PROJECT_NAME" ]; then
         echo "PROJECT_NAME is not set."
@@ -40,7 +42,8 @@ check_project_info() {
 }
 
 check_pat() {
-    source "$HOME/.bashrc"
+    # shellcheck disable=SC1090
+    source "$BASH_PROFILE"
 
     if [ -z "$PAT" ]; then
         echo "Error: PAT is not set. Please configure it using the setup script."
@@ -71,43 +74,38 @@ create_branch() {
     transformed_type=$(transform_string "$task_type")
     branch_name="$transformed_type/$task_id/$transformed_name"
 
-    echo $branch_name
+    echo "$branch_name"
 
-    # Uncomment the following line to actually create the branch
-    # git checkout -b "$branch_name"
+    echo "$branch_name"
 
-    if [ $? -ne 0 ]; then
+    if ! git checkout -b "$branch_name"; then
         echo "Failed to create the branch. Ensure you are in a Git repository."
         exit 1
     fi
 }
 
-# vmware-agent-v2
-# csem-health-checker
-
 transform_string() {
     local input="$1"
 
-    # shellcheck disable=SC2155
-    local lowercase=$(echo "$input" | tr '[:upper:]' '[:lower:]')
+    local lowercase
+    local underscores
+    local cleaned
 
-    # shellcheck disable=SC2155
-    local underscores=$(echo "$lowercase" | tr ' ' '_')
-
-    # shellcheck disable=SC2155
+    lowercase=$(echo "$input" | tr '[:upper:]' '[:lower:]')
+    underscores=$(echo "$lowercase" | tr ' ' '_')
     # shellcheck disable=SC2001
-    local cleaned=$(echo "$underscores" | sed 's/[^a-z0-9_]//g')
+    cleaned=$(echo "$underscores" | sed 's/[^a-z0-9_]//g')
 
     echo "$cleaned"
 }
 
 fetch_task_details() {
-    local task_id=$1
+    local task_id="$1"
     local response
+    local task_type
+    local task_name
 
-    response=$(curl -s -u :"$PAT" "${BASE_URL}/${task_id}?api-version=6.0")
-
-    if [ $? -ne 0 ]; then
+    if ! response=$(curl -s -u :"$PAT" "${BASE_URL}/${task_id}?api-version=6.0"); then
         echo "Failed to fetch data. Please check your PAT or URL."
         exit 1
     fi
