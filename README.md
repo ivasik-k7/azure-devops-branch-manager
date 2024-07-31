@@ -8,6 +8,39 @@ ADBM is a command-line utility designed to streamline the management of developm
 - **Configure Settings:** Set up your project, organization, and PAT.
 - **Validate PAT:** Check if the provided PAT is valid and has the necessary permissions.
 
+## Installation
+
+To install `adbm`, you can use `curl` to download the installation script directly from this repository. Follow the steps below:
+
+1. **Download and Run the Installation Script:**
+
+   ```bash
+   curl -s https://raw.githubusercontent.com/ivasik-k7/azure-devops-branch-manager/main/scripts/install.sh | bash
+   ```
+
+2. **Verify Installation:**
+   After running the installation script, you can use the `adbm` command to run the system monitor script from any location:
+   ```bash
+   adbm help
+   ```
+
+## Uninstallation
+
+To uninstall `adbm` and remove the the command, use the following steps:
+
+1. **Download and Run the Uninstallation Script:**
+
+   ```bash
+   curl -s https://raw.githubusercontent.com/ivasik-k7/azure-devops-branch-manager/main/scripts/uninstall.sh | bash
+   ```
+
+2. **Verify Uninstallation:**
+   Ensure the `adbm` command is no longer available:
+   ```bash
+   adbm help
+   # Expected output: bash: adbm: command not found
+   ```
+
 ## Commands
 
 ### `adbm help`
