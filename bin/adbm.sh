@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 
-BRANCH_SCRIPT="${PWD}/bin/branch.sh"
-SET_SCRIPT="${PWD}/bin/set.sh"
+SCRIPT_PATH=$(readlink -f "$0")
+SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
+
+BRANCH_SCRIPT="$SCRIPT_DIR/branch.sh"
+SET_SCRIPT="$SCRIPT_DIR/set.sh"
 
 print_help() {
     echo "Usage:"
