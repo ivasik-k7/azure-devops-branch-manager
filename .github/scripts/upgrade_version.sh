@@ -56,8 +56,13 @@ else
     NEW_TAG="v${MAJOR}.${MINOR}.${PATCH}"
 fi
 
-git tag "$NEW_TAG"
+if git rev-parse "$NEW_TAG" >/dev/null 2>&1; then
+    echo "Tag $NEW_TAG already exists. Deleting and recreating."
+    git tag -d "$NEW_TAG"
+    git push origin :"$NEW_TAG"
+fi
 
+git tag "$NEW_TAG"
 git push origin "$NEW_TAG"
 
 echo "::set-output name=tag_name::$NEW_TAG"
