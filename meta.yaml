@@ -1,0 +1,8 @@
+tool:
+  name: Azure Devops Branch Manager (ADBM)
+  description: Azure DevOps Branch Manager (ADBM) is a command-line tool designed to streamline branch management tasks within Azure DevOps. It allows users to create, delete, and manage branches efficiently, automate workflows, and integrate seamlessly with existing DevOps pipelines and processes.
+  version: "1.2.3-beta"
+  release: "2024-08-01"
+  author: Ivan Kovtun
+  license: MIT
+  support: jeanlacroix@ukr.net

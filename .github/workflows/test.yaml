@@ -23,23 +23,16 @@ jobs:
           adbm configure pat=$AZURE_PAT
           adbm configure project=$AZURE_PROJECT
           adbm configure organization=$AZURE_ORG
+          source ~/.bashrc
         env:
           AZURE_PAT: ${{ secrets.AZURE_PAT }}
           AZURE_ORG: ${{ secrets.AZURE_ORGANIZATION }}
           AZURE_PROJECT: ${{ secrets.AZURE_PROJECT }}
 
-      - name: Run branch script
-        run: |
-          ./adbm.sh branch my_branch_code
-
-      - name: Run assignments script
-        run: |
-          ./adbm.sh assignments
-
       - name: Run help command
         run: |
-          ./adbm.sh help
+          adbm help
 
       - name: ShellCheck Lint
         run: |
-          shellcheck adbm.sh
+          shellcheck bin/*
