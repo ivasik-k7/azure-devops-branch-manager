@@ -17,21 +17,24 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y shellcheck
 
+      - name: Install
+        run: bash scripts/install.sh
+
       - name: Run configure script
         run: |
-          bash scripts/install.sh
           adbm configure pat=$AZURE_PAT
           adbm configure project=$AZURE_PROJECT
           adbm configure organization=$AZURE_ORG
-          source ~/.bashrc
         env:
           AZURE_PAT: ${{ secrets.AZURE_PAT }}
           AZURE_ORG: ${{ secrets.AZURE_ORGANIZATION }}
           AZURE_PROJECT: ${{ secrets.AZURE_PROJECT }}
 
       - name: Run help command
-        run: |
-          adbm help
+        run: adbm help
+
+      - name: Run version command
+        run: adbm version
 
       - name: ShellCheck Lint
         run: |
