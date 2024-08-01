@@ -53,44 +53,38 @@ version_gt() {
         [ "$v1" != "$v2" ]
     fi
 }
+
 if version_gt "$latest_release_version" "$current_version"; then
     echo "Updating version from '$current_version' to '$latest_release_version' in '$META_FILE'."
 
-    bin_zip_url=$(echo "$response" | jq -r '.[] | .assets[] | select(.name == "bin.zip") | .browser_download_url')
+    TEMP_DIR=$(mktemp -d)
+    if [ ! -d "$TEMP_DIR" ]; then
+        echo "Failed to create temporary directory."
+        exit 1
+    fi
+
+    bin_zip_url=$(echo "$response" | jq -r '.[] | .assets[] | select(.name == "bin.zip") | .browser_download_url' | head -n 1)
 
     if [ -z "$bin_zip_url" ]; then
         echo "Failed to find the download URL for 'bin.zip'."
         exit 1
     fi
 
-    echo "Downloading bin.zip from '$bin_zip_url'..."
-    curl -L -o "$TOOL_DIR/bin.zip" "$bin_zip_url"
+    echo "bin.zip URL: $bin_zip_url"
 
-    echo "Extracting bin.zip..."
-    unzip -o "$TOOL_DIR/bin.zip" -d "$TOOL_DIR"
+    echo "Downloading bin.zip to temporary directory..."
+    curl -L -o "$TEMP_DIR/bin.zip" "$bin_zip_url"
 
-    rm "$TOOL_DIR/bin.zip"
+    echo "Extracting bin.zip from temporary directory..."
+    unzip -o "$TEMP_DIR/bin.zip" -d "$TEMP_DIR"
+
+    echo "Moving extracted files to '$TOOL_DIR'..."
+    sudo cp -r "$TEMP_DIR/"* "$TOOL_DIR/"
+
+    echo "Cleaning up temporary directory..."
+    rm -rf "$TEMP_DIR"
 
     echo "Version updated to '$latest_release_version'."
 else
     echo "Current version '$current_version' is up-to-date!"
 fi
-
-# if version_gt "$latest_release_version" "$current_version"; then
-#     echo "Updating version from '$current_version' to '$latest_release_version' in '$META_FILE'."
-
-#     # SCRIPT_PATH=$(readlink -f "$0")
-#     # SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
-
-#     # cd "$SCRIPT_DIR"
-#     # cd ../
-
-#     # ./scripts/uninstall.sh
-#     # ./scripts/install.sh
-
-#     # cd "$SCRIPT_DIR"
-
-#     echo "Version updated to '$latest_release_version'."
-# else
-#     echo "Current version '$current_version' is up-to-date!"
-# fi
