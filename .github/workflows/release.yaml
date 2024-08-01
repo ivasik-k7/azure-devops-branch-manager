@@ -31,10 +31,15 @@ jobs:
         run: |
           chmod +x .github/scripts/upgrade_version.sh
           .github/scripts/upgrade_version.sh beta
+      - name: Generate Metadata
+        id: generate_metadata
+        run: |
+          chmod +x .github/scripts/meta.sh
+          .github/scripts/meta.sh ${{ steps.upgrade_tag_version.outputs.tag_name }}
 
       - name: Zip bin directory
         run: |
-          zip -r bin.zip bin/*
+          zip -r bin.zip bin/* meta.yaml
 
       - name: Create Release
         id: create_release
