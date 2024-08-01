@@ -1,0 +1,45 @@
+name: Test
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up shell environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+
+      - name: Run configure script
+        run: |
+          bash scripts/install.sh
+          adbm configure pat=$AZURE_PAT
+          adbm configure project=$AZURE_PROJECT
+          adbm configure organization=$AZURE_ORG
+        env:
+          AZURE_PAT: ${{ secrets.AZURE_PAT }}
+          AZURE_ORG: ${{ secrets.AZURE_ORGANIZATION }}
+          AZURE_PROJECT: ${{ secrets.AZURE_PROJECT }}
+
+      - name: Run branch script
+        run: |
+          ./adbm.sh branch my_branch_code
+
+      - name: Run assignments script
+        run: |
+          ./adbm.sh assignments
+
+      - name: Run help command
+        run: |
+          ./adbm.sh help
+
+      - name: ShellCheck Lint
+        run: |
+          shellcheck adbm.sh
