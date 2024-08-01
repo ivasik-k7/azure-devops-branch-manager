@@ -41,15 +41,25 @@ add_to_profile() {
 
     export "$var_name=$var_value"
 
+    # shellcheck disable=SC2155
+    local escaped_value=$(printf '%s\n' "$var_value" | sed 's/[&/\]/\\&/g')
+
     if ! grep -q "export $var_name=" "$profile_file"; then
+        echo "Adding $var_name to $profile_file"
         echo "export $var_name=\"$var_value\"" >>"$profile_file"
     else
-        sed -i "s/export $var_name=.*/export $var_name=\"$var_value\"/" "$profile_file"
+        echo "Updating $var_name in $profile_file"
+        sed -i '' "s|^export $var_name=.*|export $var_name=\"$escaped_value\"|" "$profile_file"
     fi
 
     # shellcheck disable=SC1090
     source "$profile_file"
-    echo "$var_name has been set to $var_value and added to $profile_file."
+    # echo "$var_name has been set to $var_value and added to $profile_file."
 }
+
+if [ "$#" -ne 2 ]; then
+    echo "Usage: $0 <variable_name> <variable_value>"
+    exit 1
+fi
 
 add_to_profile "$1" "$2"
