@@ -31,11 +31,7 @@ jobs:
 
       - name: Run help command
         run: |
-          ./adbm.sh -h
-
-      - name: Run version command
-        run: |
-          ./adbm.sh -v
+          adbm help
 
       - name: ShellCheck Lint
         run: |
