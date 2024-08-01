@@ -33,6 +33,10 @@ jobs:
         run: |
           adbm help
 
+      - name: Run version command
+        run: |
+          adbm -v
+
       - name: ShellCheck Lint
         run: |
           shellcheck bin/*
