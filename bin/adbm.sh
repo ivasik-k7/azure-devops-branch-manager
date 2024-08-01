@@ -6,6 +6,7 @@ SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
 
 BRANCH_SCRIPT="$SCRIPT_DIR/branch.sh"
 SET_SCRIPT="$SCRIPT_DIR/set.sh"
+ASSIGNMENTS_SCRIPT="$SCRIPT_DIR/assignments.sh"
 
 print_help() {
     echo "Usage:"
@@ -52,6 +53,9 @@ configure)
         esac
         shift
     done
+    ;;
+assignments)
+    echo "asignemnets"
     ;;
 help)
     print_help
