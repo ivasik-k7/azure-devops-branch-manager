@@ -90,8 +90,8 @@ branch)
     exit 0
     ;;
 *)
-    echo "Invalid command: $0 $COMMAND"
-    echo "Please refer to the usage by executing: $0 help"
+    echo "Invalid command: adbm $COMMAND"
+    echo "Please refer to the usage by executing: adbm help"
     exit 0
     ;;
 esac
