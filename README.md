@@ -91,6 +91,7 @@ Before running the script, ensure you have the following utilities installed:
 3. **Validate PAT**: Checks the validity of the Personal Access Token.
 4. **Fetch Task Details**: Retrieves task information from Azure DevOps using the provided task ID.
 5. **Create Branch**: Constructs a branch name based on the task details and creates the branch in the Git repository.
+6. **Update**: Call the upgrade command for making up-to-datess
 
 ## Troubleshooting
 
